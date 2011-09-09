@@ -1,0 +1,12 @@
+application: tunehubmeta
+version: 1
+runtime: python
+api_version: 1
+
+handlers:
+- url: /get
+  script: get.py
+
+- url: /getlist
+  script: grouped.py
+
