@@ -1,6 +1,8 @@
 import urllib
 import urllib2
 
+__version__ = 1
+
 class Sing365:
     
     def __init__(self, artist, title):
