@@ -1,5 +1,10 @@
 import cgi
-import sing365
+import lyriclib
+
+modstring = ''
+for module in lyriclib.mods_version:
+	modstring = modstring + str(module) + str(lyriclib.mods_version[module])
+	
 import datastore
 storeapi = datastore.Store()
 form = cgi.FieldStorage()
@@ -11,26 +16,34 @@ try:
 except KeyError:
 	error = True
 
-def site():
-	global artist, title
-	api = sing365.Sing365(artist, title)
-	lyric = api.getLyric()
-	storeapi.add(artist, title, lyric, siteID='Sing365', siteVersion=sing365.__version__)
-	print lyric
+def site(artist, title):
+	api = lyriclib.lyricsapi.API(artist, title, sources=[lyriclib.sing365])
+	lyric = api.get()
+	if lyric != None:
+		storeapi.add(artist, title, lyric, siteID=api.siteID, siteVersion=modstring)
+		printLyric(lyric, api.siteID)
+
+def printLyric(lyric, source):
+	if source != None and lyric != None:
+		print '\nSource: ' + source + '\n'
+		print lyric
 
 if error == False:
 	data = storeapi.get(artist, title)
-	is_data = False
-	has_lyric = False
 	if data != None:
-		print data.lyric
-		is_data = True
-		has_lyric = True
-	
-	if is_data:
-		if data.siteVersion < sing365.__version__:
-			if has_lyric != True:
-				site()
+		#Si le datastore a des informations
+		
+		#On les recupere
+		lyric = data.lyric
+		siteID = data.siteID
+		siteVersion = data.siteVersion
+
+		#Si le siteVersion est different du modstring, on appelle site()
+		if siteVersion != modstring:
+			site(artist, title)
+		else:
+			#Si le siteVersion ne differe pas, on affiche
+			printLyric(lyric, siteID)
 	else:
-		if has_lyric != True:
-			site()
+		#Le datastore n'a pas de donnees
+		site(artist, title)

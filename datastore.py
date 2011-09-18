@@ -30,4 +30,4 @@ class Lyrics(db.Model):
     title = db.StringProperty()
     lyric = db.TextProperty()
     siteID = db.StringProperty()
-    siteVersion = db.IntegerProperty()
+    siteVersion = db.StringProperty()
