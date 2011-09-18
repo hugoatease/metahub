@@ -1,0 +1,1 @@
+__all__ = ['metahub', 'sing365', 'lyricsapi']
