@@ -1,4 +1,6 @@
 from google.appengine.ext import db
+import time
+
 class Store:
 #The Store class allows to wrap common lyric's storage operations with the GAE Datastore
 
@@ -12,6 +14,7 @@ class Store:
         api.lyric = lyric
         api.siteID = siteID
         api.siteVersion = siteVersion
+        api.date = time.time()
         api.put()
     
     def get(self, artist, title):
@@ -31,3 +34,4 @@ class Lyrics(db.Model):
     lyric = db.TextProperty()
     siteID = db.StringProperty()
     siteVersion = db.StringProperty()
+    date = db.FloatProperty()
