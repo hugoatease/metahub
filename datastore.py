@@ -14,7 +14,8 @@ class Store:
         api.lyric = lyric
         api.siteID = siteID
         api.siteVersion = siteVersion
-        api.date = time.time()
+        date = time.time()
+        api.date = date
         api.put()
     
     def get(self, artist, title):
