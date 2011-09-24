@@ -75,7 +75,7 @@ class Export:
     def run(self):
         results = self.getData()
         data = self.parse(results)
-        csvdata = self.writecsv(data, compress = True)
+        csvdata = self.writecsv(data, compress = False)
         return csvdata
     
 class Filter:
@@ -94,11 +94,12 @@ class Filter:
         
         results = []
         for line in csvapi:
-            if first == 'Artist':
-                data = {'Artist' : line[0], 'Title' : line[1]}
-            if first == 'Title':
-                data = {'Artist' : line[1], 'Title' : line[0]}
             try:
+                if first == 'Artist':
+                    data = {'Artist' : line[0], 'Title' : line[1]}
+                if first == 'Title':
+                    data = {'Artist' : line[1], 'Title' : line[0]}
+            
                 results.append(data)
             except:
                 pass
